@@ -9,7 +9,9 @@ struct SETTING_COUNTER {
   char sta_pass[64];
   char module_id[32];
   uint32_t lastTime;
-  uint32_t timeArray[220];
+  uint32_t timeArray[219];
+  uint8_t mode;//モード設定
+  // 0:非公開SSID（0:接続しない）
 } sc = {
   1,
   0,
@@ -32,7 +34,7 @@ void memory_begin() {
   EEPROM.get<SETTING_COUNTER>(0, sc);
   Serial.print("Setting_Counter.count : ");
   Serial.println(sc.count);
-  if (sc.count > 220) {
+  if (sc.count > 219) {
     sc.count = 0;
   }
 
@@ -105,6 +107,15 @@ uint8_t memory_getTimer() {
 
 void memory_setTimer(uint8_t Timer) {
   sc.sendTimer = Timer;
+  return;
+}
+
+uint8_t memory_getMode() {
+  return sc.mode;
+}
+
+void memory_setMode(uint8_t mode) {
+  sc.mode = mode;
   return;
 }
 

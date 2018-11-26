@@ -70,8 +70,12 @@ void beginWeb() {
                        "<div class=\"row\"> <label for=\"pwd\">PASS : </label> <div> <input type=\"password\" name=\"pwd\" id=\"pwd\"maxlength=\"64\"> </div></div>"
                        "<div class=\"row\"> <label for=\"time\">Send Interval(h):</label> <div> <input type=\"number\" name=\"time\" value=\"");
     content += memory_getTimer();
-    content += F("\" min=\"1\" max=\"24\"></div></div>");
-    content += F("<div class=\"footer\"><input type=\"submit\"value=\"Save\"></div></form></div>"
+    content += F("\" min=\"1\" max=\"24\"></div></div>"
+    "<div class=\"row\"> <label for=\"wifimode\">非公開SSID対応:</label> <div> <input type=\"checkbox\" name=\"wifimode\" value=\"1\"");
+    if(memory_getMode() == 1){
+      content += F("checked=\"checked\"");
+    }
+    content += F("><div class=\"footer\"><input type=\"submit\"value=\"Save\"></div></form></div>"
                  "<div><form  name=\"myForm\" method='post' action='clear_data'>"
                  "<p>Count Timer Data Clear</p><div class=\"footer\"><input type=\"submit\"value=\"Clear\"></div></form></div>"
                  "<div><form  name=\"myForm\" method='post' action='send_data'>"
@@ -149,7 +153,9 @@ void beginWeb() {
     String newssid = WebServer.arg("ssid");
     String newpwd = WebServer.arg("pwd");
     String timer_str = WebServer.arg("time");
+    String wifimode_str = WebServer.arg("wifimode");
     int timer_int = timer_str.toInt();
+    int wifimode_int = wifimode_str.toInt();
     Serial.print("new send interval : ");
     Serial.println(timer_int);
     if (timer_int <= 24 && timer_int >= 1) {
@@ -157,6 +163,9 @@ void beginWeb() {
     }
     Serial.print("newssid : ");
     Serial.println(newssid);
+    Serial.print("wifimode : ");
+    Serial.println(wifimode_int);
+    memory_setMode(wifimode_int);
     String content;
     if (newssid.length() > 0) {
       memory_setSSID(newssid.c_str());

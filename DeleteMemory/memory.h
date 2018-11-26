@@ -1,3 +1,5 @@
+#ifndef memory__h
+#define memory__h
 #include <EEPROM.h>
 
 struct SETTING_COUNTER {
@@ -7,7 +9,9 @@ struct SETTING_COUNTER {
   char sta_pass[64];
   char module_id[32];
   uint32_t lastTime;
-  uint32_t timeArray[220];
+  uint32_t timeArray[219];
+  uint8_t mode;//モード設定
+  // 0:非公開SSID（0:接続しない）
 } sc = {
   1,
   0,
@@ -33,20 +37,20 @@ void memory_save() {
   EEPROM.commit();
 }
 
-uint32_t memory_getLastTime(){
+uint32_t memory_getLastTime() {
   return sc.lastTime;
 }
 
-void memory_setLastTime(uint32_t Time){
+void memory_setLastTime(uint32_t Time) {
   sc.lastTime = Time;
   return;
 }
 
-uint32_t* memory_getTimeArray(){
+uint32_t* memory_getTimeArray() {
   return sc.timeArray;
 }
 
-void memory_setTimeArray(uint32_t Time){
+void memory_setTimeArray(uint32_t Time) {
   sc.timeArray[sc.count++] = Time;
   return;
 }
@@ -60,38 +64,49 @@ void memory_setModule(const char module[32]){
   return;
 }
 
-char* memory_getPass(){
+char* memory_getPass() {
   return sc.sta_pass;
 }
 
-void memory_setPass(const char PASS[64]){
+void memory_setPass(const char PASS[64]) {
   strcpy(sc.sta_pass, PASS);
   return;
 }
 
-char* memory_getSSID(){
+char* memory_getSSID() {
   return sc.sta_ssid;
 }
 
-void memory_setSSID(const char SSID[32]){
+void memory_setSSID(const char SSID[32]) {
   strcpy(sc.sta_ssid, SSID);
   return;
 }
 
-uint8_t memory_getCount(){
+uint8_t memory_getCount() {
   return sc.count;
 }
 
-void memory_setCount(uint8_t Count){
+void memory_setCount(uint8_t Count) {
   sc.count = Count;
   return;
 }
 
-uint8_t memory_getTimer(){
+uint8_t memory_getTimer() {
   return sc.sendTimer;
 }
 
-void memory_setTimer(uint8_t Timer){
+void memory_setTimer(uint8_t Timer) {
   sc.sendTimer = Timer;
   return;
 }
+
+uint8_t memory_getMode() {
+  return sc.mode;
+}
+
+void memory_setMode(uint8_t mode) {
+  sc.mode = mode;
+  return;
+}
+
+#endif

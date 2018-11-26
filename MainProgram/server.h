@@ -7,7 +7,7 @@
 String sendDataPacket;
 
 void dataFormat() {
-  sendDataPacket = "{\"version\":1,\"count\":[";
+  sendDataPacket = "{\"version\":2,\"count\":[";
   int i;
   if (memory_getCount() != 0) {
     for (i = 0; i < memory_getCount() - 1; i++) {
@@ -20,6 +20,10 @@ void dataFormat() {
   sendDataPacket += WiFi.macAddress();
   sendDataPacket += "\",\"battery\":";
   sendDataPacket += getBattery();
+  sendDataPacket += ",\"rssi\":";
+  sendDataPacket += WiFi.RSSI();
+  sendDataPacket += ",\"sendtime\":";
+  sendDataPacket += rtc_getTime();
   sendDataPacket += "}";
   Serial.println(sendDataPacket);
 }
@@ -83,4 +87,3 @@ bool sendData() {
 }
 
 #endif
-

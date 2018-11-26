@@ -22,6 +22,7 @@ void setup() {
   memory_setSSID("");
   memory_setCount(0);
   memory_setTimer(1);
+  memory_setMode(0);
   memory_save();
   rtc.begin();
   rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
